@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Go Out With Me? | NK Digital Services</title>
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --secondary-pink: #ffb3c1;
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fff0f3;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container {
+            padding: 20px;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 350px;
+            width: 90%;
+            position: relative;
+        }
+
+        img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 5px solid var(--secondary-pink);
+        }
+
+        h1 {
+            color: var(--primary-pink);
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            height: 60px;
+            align-items: center;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #yesBtn {
+            background-color: var(--primary-pink);
+            color: white;
+            z-index: 10;
+        }
+
+        #noBtn {
+            background-color: #dee2e6;
+            color: #495057;
+            position: absolute;
+            transition: all 0.2s ease;
+        }
+
+        /* Success Screen */
+        #success {
+            display: none;
+        }
+
+        .confetti {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="YOUR_MUSIC_URL.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container" id="mainCard">
+        <img src="https://placekitten.com/200/200" alt="Cute Photo">
+        <h1>Will you go on a date with me? 🌹</h1>
+        
+        <div class="btn-group">
+            <button id="yesBtn" onclick="celebrate()">YES!</button>
+            <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
+        </div>
+    </div>
+
+    <div class="container" id="success">
+        <div class="confetti">🎉💖✨</div>
+        <h1>Yay! I knew it!</h1>
+        <p>I'll pick you up at 7 PM. Sending you a confirmation on WhatsApp!</p>
+        <button id="yesBtn" onclick="sendRSVP()">Send Confirmation</button>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const mainCard = document.getElementById('mainCard');
+        const successCard = document.getElementById('success');
+        const music = document.getElementById('bgMusic');
+
+        // Function to move the "No" button randomly
+        function moveButton() {
+            // Start music on first interaction if possible
+            music.play().catch(() => {}); 
+
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        // Switch to success screen
+        function celebrate() {
+            mainCard.style.display = 'none';
+            successCard.style.display = 'block';
+            music.play();
+            
+            // Basic browser confetti simulation
+            for(let i=0; i<50; i++) {
+                createParticle();
+            }
+        }
+
+        // WhatsApp RSVP Logic
+        function sendRSVP() {
+            const phoneNumber = "9804650000"; // CHANGE TO CLIENT'S WHATSAPP NUMBER
+            const message = "Yes! I'd love to go on a date with you! ❤️ I'm so excited!";
+            window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // Small visual flair
+        function createParticle() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '100vh';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            heart.style.transition = 'all 3s linear';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.style.top = '-10vh';
+                heart.style.opacity = '0';
+            }, 100);
+
+            setTimeout(() => heart.remove(), 3000);
+        }
+    </script>
+</body>
+</html>
